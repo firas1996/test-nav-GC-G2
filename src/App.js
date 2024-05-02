@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { Link, Route, Routes } from "react-router-dom";
+import Home from "./Screens/Home";
+import Profile from "./Screens/Profile";
+import Products from "./Screens/Products";
+import NotFound from "./Screens/NotFound";
+import ProductDetails from "./Screens/ProductDetails";
+import AddProduct from "./Screens/AddProduct";
+import ProductLayout from "./Screens/ProductLayout";
 
 function App() {
+  const role = localStorage.getItem("role");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/Profile">Profile</Link>
+          </li>
+          {role === "admin" && (
+            <li>
+              <Link to="/Products">Products</Link>
+            </li>
+          )}
+        </ul>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Products" element={<ProductLayout />}>
+          <Route index element={<Products />} />
+          <Route path=":id" element={<ProductDetails />} />
+          <Route path="add" element={<AddProduct />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 
